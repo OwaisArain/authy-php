@@ -330,6 +330,17 @@ class AuthyApi
             throw new AuthyFormatException($message);
         }
     }
+    
+    public function getQrCode($format,$authy_id, $opts = [])
+    {
+        $authy_id = urlencode($authy_id);
+        $format = urlencode($format);
+        $resp = $this->rest->post("/protected/{$format}/users/{$authy_id}/secret", array_merge(
+            $this->default_options,
+            ['query' => $opts]
+        ));
 
+        return new AuthyResponse($resp);
+    }
 
 }
